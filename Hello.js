@@ -6,4 +6,3 @@ export default function Hello(app) {
       res.send('Welcome to Full Stack Development!')
     })
   }
-  
