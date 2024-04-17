@@ -16,10 +16,9 @@ var allowCrossDomain = function(req, res, next) {
     next();
 }
 
-// app.configure(function() {
-// });    
-
-app.use(allowCrossDomain);
+app.configure(function() {
+    app.use(allowCrossDomain);
+});    
 app.use(
     cors({
         credentials: true,
