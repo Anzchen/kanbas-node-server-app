@@ -7,44 +7,35 @@ import mongoose from "mongoose";
 import UserRoutes from "./Kanbas/Users/routes.js";
 import session from "express-session";
 import "dotenv/config";
+const CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
+mongoose.connect(CONNECTION_STRING);
 
-const allowedOrigins = [
-  process.env.FRONTEND_URL,`https://a6--friendly-profiterole-d66233.netlify.app`,
-];
 
-mongoose.connect(process.env.DB_CONNECTION_STRING || "mongodb://localhost:27017/kanbas");
 const app = express();
-app.use(
-    cors({
-        credentials: true,
-        origin: (origin, callback) => {
-            if (!origin || allowedOrigins.includes(origin)) {
-              return callback(null, true);
-            } else {
-              const msg =
-                "The CORS policy for this site does not allow access from the specified Origin.";
-              return callback(new Error(msg), false);
-            }
-        }
-    })
-);
+
 const sessionOptions = {
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+};
+if (process.env.NODE_ENV !== "development") {
+  sessionOptions.proxy = true;
+  sessionOptions.cookie = {
+    sameSite: "none",
+    secure: true,
+    domain: process.env.HTTP_SERVER_DOMAIN,
   };
-  if (process.env.NODE_ENV !== "development") {
-    sessionOptions.proxy = true;
-    sessionOptions.cookie = {
-      sameSite: "none",
-      secure: true,
-      domain: process.env.HTTP_SERVER_DOMAIN,
-    };
-  }
-app.use(session(sessionOptions));  
+}
+app.use(session(sessionOptions));
+app.use(cors({   credentials: true,
+       origin: process.env.FRONTEND_URL
+}));
+
 app.use(express.json());
 ModuleRoutes(app);
 CourseRoutes(app);
-UserRoutes(app);
 Lab5(app);
+Hello(app);
+UserRoutes(app);
+
 app.listen(process.env.PORT || 4000);
