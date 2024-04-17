@@ -68,9 +68,6 @@ const signup = async (req, res) => {
   };
 
 
-
-
-
   app.get("/api/users", findAllUsers);
   app.post("/api/users", createUser);
   app.get("/api/users/:userId", findUserById);
