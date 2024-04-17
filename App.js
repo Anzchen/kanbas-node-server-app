@@ -7,12 +7,26 @@ import mongoose from "mongoose";
 import UserRoutes from "./Kanbas/Users/routes.js";
 import session from "express-session";
 import "dotenv/config";
+const strippedNetlifyUrl = process.env.NETLIFY_URL.replace("https://", "");
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  ...branches.map((branch) => `https://${branch}--${strippedNetlifyUrl}`),
+];
+
 mongoose.connect(process.env.DB_CONNECTION_STRING || "mongodb://localhost:27017/kanbas");
 const app = express();
 app.use(
     cors({
         credentials: true,
-        origin: process.env.FRONTEND_URL,
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.includes(origin)) {
+              return callback(null, true);
+            } else {
+              const msg =
+                "The CORS policy for this site does not allow access from the specified Origin.";
+              return callback(new Error(msg), false);
+            }
+        }
     })
 );
 const sessionOptions = {
