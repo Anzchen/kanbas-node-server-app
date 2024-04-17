@@ -13,7 +13,7 @@ const app = express();
 app.use(
     cors({
         credentials: true,
-        origin: process.env.CONNECTION_STRING,
+        origin: process.env.HTTP_SERVER_DOMAIN,
     })
 );
 const sessionOptions = {
