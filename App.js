@@ -10,12 +10,12 @@ import "dotenv/config";
 const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
 mongoose.connect(CONNECTION_STRING);
 const app = express();
-app.use(
-    cors({
-        credentials: true,
-        origin: process.env.HTTP_SERVER_DOMAIN,
-    })
-);
+// app.use(
+//     cors({
+//         credentials: true,
+//         origin: process.env.HTTP_SERVER_DOMAIN,
+//     })
+// );
 const sessionOptions = {
     secret: process.env.SESSION_SECRET,
     resave: false,
