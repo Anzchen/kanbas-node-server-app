@@ -8,9 +8,8 @@ import UserRoutes from "./Kanbas/Users/routes.js";
 import session from "express-session";
 import "dotenv/config";
 
-const strippedNetlifyUrl = process.env.NETLIFY_URL.replace("https://", "");
 const allowedOrigins = [
-  process.env.FRONTEND_URL,`https://a6--${strippedNetlifyUrl}`,
+  process.env.FRONTEND_URL,`https://a6--friendly-profiterole-d66233.netlify.app`,
 ];
 
 mongoose.connect(process.env.DB_CONNECTION_STRING || "mongodb://localhost:27017/kanbas");
